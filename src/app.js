@@ -7,7 +7,7 @@ const Player = require('./player.js');
 /* Global variables */
 var canvas = document.getElementById('screen');
 var game = new Game(canvas, update, render);
-var player = new Player({ x: 0, y: 240 })
+var player = new Player({ x: 0, y: 240 });
 
 /**
  * @function masterLoop
@@ -53,32 +53,40 @@ window.onkeydown = function (event) {
     case 38:
     case 87:
       event.preventDefault();
-      // TODO > check for valid move
-      // Player.move(up);
+	  if(!game.paused){
+        // TODO > check for valid move
+        // player.move(up);
+	  }
       break;
 
     // Left
     case 37:
     case 65:
       event.preventDefault();
-      // TODO > check for valid move
-      // Player.move(left);
+	  if(!game.paused){
+        // TODO > check for valid move
+        // player.move(left);
+	  }
       break;
 
     // Down
     case 40:
     case 83:
       event.preventDefault();
-      // TODO > check for valid move
-      // Player.move(down);
+	  if(!game.paused){
+        // TODO > check for valid move
+        // player.move(down);
+	  }
       break;
 
     // Right
     case 39:
     case 68:
       event.preventDefault();
-      // TODO > check for valid move
-      // Player.move(right);
+	  if(!game.paused){
+        // TODO > check for valid move
+        // player.move(right);
+	  }
       break;
 
   }
