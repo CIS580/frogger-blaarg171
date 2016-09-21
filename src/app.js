@@ -7,14 +7,14 @@ const Player = require('./player.js');
 /* Global variables */
 var canvas = document.getElementById('screen');
 var game = new Game(canvas, update, render);
-var player = new Player({x: 0, y: 240})
+var player = new Player({ x: 0, y: 240 })
 
 /**
  * @function masterLoop
  * Advances the game in sync with the refresh rate of the screen
  * @param {DOMHighResTimeStamp} timestamp the current time
  */
-var masterLoop = function(timestamp) {
+var masterLoop = function (timestamp) {
   game.loop(timestamp);
   window.requestAnimationFrame(masterLoop);
 }
@@ -45,4 +45,46 @@ function render(elapsedTime, ctx) {
   ctx.fillStyle = "lightblue";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   player.render(elapsedTime, ctx);
+}
+
+window.onkeydown = function (event) {
+  switch (event.keyCode) {
+    // UP
+    case 38:
+    case 87:
+      event.preventDefault();
+      if (this.state == "idle") {
+
+      }
+      break;
+
+    // Left
+    case 37:
+    case 65:
+      event.preventDefault();
+      if (this.state == "idle") {
+
+      }
+      break;
+
+    // Down
+    case 40:
+    case 83:
+      event.preventDefault();
+      if (this.state == "idle") {
+
+      }
+      break;
+
+    // Right
+    case 39:
+    case 68:
+      event.preventDefault();
+      if (this.state == "idle") {
+
+      }
+      break;
+
+
+  }
 }

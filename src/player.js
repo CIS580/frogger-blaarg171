@@ -1,6 +1,6 @@
 "use strict";
 
-const MS_PER_FRAME = 1000/8;
+const MS_PER_FRAME = 1000 / 8;
 
 /**
  * @module exports the Player class
@@ -16,9 +16,11 @@ function Player(position) {
   this.state = "idle";
   this.x = position.x;
   this.y = position.y;
-  this.width  = 64;
+  this.targetx = position.x;
+  this.targety = position.y;
+  this.width = 64;
   this.height = 64;
-  this.spritesheet  = new Image();
+  this.spritesheet = new Image();
   this.spritesheet.src = encodeURI('assets/PlayerSprite2.png');
   this.timer = 0;
   this.frame = 0;
@@ -28,17 +30,21 @@ function Player(position) {
  * @function updates the player object
  * {DOMHighResTimeStamp} time the elapsed time since the last frame
  */
-Player.prototype.update = function(time) {
-  switch(this.state) {
+Player.prototype.update = function (time) {
+  switch (this.state) {
     case "idle":
       this.timer += time;
-      if(this.timer > MS_PER_FRAME) {
+      if (this.timer > MS_PER_FRAME) {
         this.timer = 0;
         this.frame += 1;
-        if(this.frame > 3) this.frame = 0;
+        if (this.frame > 3) this.frame = 0;
       }
       break;
     // TODO: Implement your player's update by state
+
+    case "moving":
+      
+      break;
   }
 }
 
@@ -47,8 +53,8 @@ Player.prototype.update = function(time) {
  * {DOMHighResTimeStamp} time the elapsed time since the last frame
  * {CanvasRenderingContext2D} ctx the context to render into
  */
-Player.prototype.render = function(time, ctx) {
-  switch(this.state) {
+Player.prototype.render = function (time, ctx) {
+  switch (this.state) {
     case "idle":
       ctx.drawImage(
         // image
@@ -60,5 +66,9 @@ Player.prototype.render = function(time, ctx) {
       );
       break;
     // TODO: Implement your player's redering according to state
+
+    case "moving":
+
+      break;
   }
 }
