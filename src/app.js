@@ -53,38 +53,33 @@ window.onkeydown = function (event) {
     case 38:
     case 87:
       event.preventDefault();
-      if (this.state == "idle") {
-
-      }
+      // TODO > check for valid move
+      // Player.move(up);
       break;
 
     // Left
     case 37:
     case 65:
       event.preventDefault();
-      if (this.state == "idle") {
-
-      }
+      // TODO > check for valid move
+      // Player.move(left);
       break;
 
     // Down
     case 40:
     case 83:
       event.preventDefault();
-      if (this.state == "idle") {
-
-      }
+      // TODO > check for valid move
+      // Player.move(down);
       break;
 
     // Right
     case 39:
     case 68:
       event.preventDefault();
-      if (this.state == "idle") {
-
-      }
+      // TODO > check for valid move
+      // Player.move(right);
       break;
-
 
   }
 }
