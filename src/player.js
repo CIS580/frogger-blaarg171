@@ -1,7 +1,7 @@
 "use strict";
 
 const MS_PER_FRAME = 1000 / 8;
-const MOVE_SPEED = 16;
+const MOVE_SPEED = 128;
 
 /**
  * @module exports the Player class
@@ -48,13 +48,13 @@ Player.prototype.update = function (time) {
       this.timer += time;
       if (this.timer > MS_PER_FRAME) { // TODO > update pos separate from animation? 2 frames per pos update?
         this.frame += 1;
-		if(this.frame < 3){
-		  this.x += (this.targetx - this.x)/4;
-		  this.y += (this.targety - this.y)/4;
-		} else {
-		  this.state = "idle";
+        if (this.frame < 3) {
+          this.x += this.targetx * MOVE_SPEED / 8;
+          this.y += this.targety * MOVE_SPEED / 8;
+        } else if (this.frame >= 8) {
+          this.state = "idle";
           this.frame = 10;
-		}
+        }
       }
       break;
   }
@@ -73,25 +73,24 @@ Player.prototype.render = function (time, ctx) {
         // image
         this.spritesheet,
         // source rectangle
-        this.frame * 64, (this.frame % 10) * 64, this.width, this.height,
+        Math.max(this.frame - 10, 0) * 64, Math.floor(this.frame / 10) * 64, this.width, this.height,
         // destination rectangle
         this.x, this.y, this.width, this.height
       );
       break;
     // TODO: Implement your player's redering according to state
 
-    // TODO > is this even necessary?
-    // case "moving":
+    case "dead":
 
-    //   break;
+      break;
   }
 }
 
-Player.prototype.move = function (position) {
+Player.prototype.move = function (x, y) {
   if (this.state == "idle") {
     this.state = "moving";
-    this.targetx = position.x;
-    this.targety = position.y;
+    this.targetx = x;
+    this.targety = y;
     this.frame = -1; // -1 so animation starts on next update() correctly. -1++ = 0
   }
 }

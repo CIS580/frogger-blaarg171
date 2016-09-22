@@ -9,6 +9,9 @@ var canvas = document.getElementById('screen');
 var game = new Game(canvas, update, render);
 var player = new Player({ x: 0, y: 240 });
 
+var background = new Image();
+background.src = encodeURI('assets/background.png');
+
 /**
  * @function masterLoop
  * Advances the game in sync with the refresh rate of the screen
@@ -42,8 +45,7 @@ function update(elapsedTime) {
   * @param {CanvasRenderingContext2D} ctx the context to render to
   */
 function render(elapsedTime, ctx) {
-  ctx.fillStyle = "lightblue";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(background, 0, 0, background.width, background.height);
   player.render(elapsedTime, ctx);
 }
 
@@ -53,40 +55,36 @@ window.onkeydown = function (event) {
     case 38:
     case 87:
       event.preventDefault();
-	  if(!game.paused){
-        // TODO > check for valid move
-        // player.move(up);
-	  }
+      if (!game.paused) {
+        player.move(0, -1);
+      }
       break;
 
     // Left
     case 37:
     case 65:
       event.preventDefault();
-	  if(!game.paused){
-        // TODO > check for valid move
-        // player.move(left);
-	  }
+      if (!game.paused) {
+        player.move(-1, 0);
+      }
       break;
 
     // Down
     case 40:
     case 83:
       event.preventDefault();
-	  if(!game.paused){
-        // TODO > check for valid move
-        // player.move(down);
-	  }
+      if (!game.paused) {
+        player.move(0, 1);
+      }
       break;
 
     // Right
     case 39:
     case 68:
       event.preventDefault();
-	  if(!game.paused){
-        // TODO > check for valid move
-        // player.move(right);
-	  }
+      if (!game.paused) {
+        player.move(1, 0);
+      }
       break;
 
   }
