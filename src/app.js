@@ -3,11 +3,15 @@
 /* Classes */
 const Game = require('./game.js');
 const Player = require('./player.js');
+const Mini = require('./mini.js');
 
 /* Global variables */
 var canvas = document.getElementById('screen');
 var game = new Game(canvas, update, render);
 var player = new Player({ x: 0, y: 240 });
+var obstacles = [];
+var lanes = [[144, 192, 336, 384], [480, 528, 576, 624]];
+var level = 1;
 
 var background = new Image();
 background.src = encodeURI('assets/background.png');
@@ -34,7 +38,9 @@ masterLoop(performance.now());
  */
 function update(elapsedTime) {
   player.update(elapsedTime);
-  // TODO: Update the game objects
+  spawnObstacles();
+  updateObstacles();
+  document.getElementById("lives").innerHTML = player.lives;
 }
 
 /**
@@ -47,6 +53,31 @@ function update(elapsedTime) {
 function render(elapsedTime, ctx) {
   ctx.drawImage(background, 0, 0, background.width, background.height);
   player.render(elapsedTime, ctx);
+  for (var i = 0; i < obstacles.length; i++) {
+    obstacles[i].render(ctx);
+  }
+}
+
+function spawnObstacles() {
+
+  // Spawn Minis
+  if (obstacles.length < 4) {
+    for (var d = 1; d <= level; d++) {
+      for (var l = 0; l < lanes[0].length; l++) {
+        obstacles.push(new Mini(lanes[0][l], rollRandom(-64, 640), (l > 1) ? -1 : 1));
+      }
+    }
+  }
+
+
+}
+
+function updateObstacles() {
+  for (var i = 0; i < obstacles.length; i++) {
+    obstacles[i].update();
+    if (obstacles[i].y > canvas.height + obstacles[i].height ||
+      obstacles[i].y < 0 + obstacles[i].height) obstacles.splice(i--, 1);
+  }
 }
 
 window.onkeydown = function (event) {
@@ -89,3 +120,8 @@ window.onkeydown = function (event) {
 
   }
 }
+
+function rollRandom(aMinimum, aMaximum) {
+  return Math.floor(Math.random() * (aMaximum - aMinimum) + aMinimum);
+}
+

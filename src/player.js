@@ -25,6 +25,7 @@ function Player(position) {
   this.spritesheet.src = encodeURI('assets/PlayerSprite2.png');
   this.timer = 0;
   this.frame = 10;
+  this.lives = 3;
 }
 
 /**
