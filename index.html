@@ -1,13 +1,30 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Frogger</title>
-    <link type="text/css" rel="stylesheet" href="game.css" />
-  </head>
-  <body>
-    <h1>Play Frogger</h1>
-    <canvas id="screen" width="768" height="576"></canvas>
+
+<head>
+  <title>Frogger</title>
+  <link type="text/css" rel="stylesheet" href="game.css" />
+</head>
+
+<body>
+  <h1>Play Frogger</h1>
+  <canvas id="screen" width="768" height="576"></canvas>
+
+  <table id="sidebar">
+    <col width="150">
+    <tr>
+      <th>Lives: </th>
+      <th id="lives">3</th>
+    </tr>
+  </table>
+
+  <div>
     <h2>Instructions</h2>
-    <script type="text/javascript" src="bundle.js"></script>
-  </body>
+    <p>
+      WASD or Arrow keys to move.
+    </p>
+  </div>
+  <script type="text/javascript" src="bundle.js"></script>
+</body>
+
 </html>
