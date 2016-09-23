@@ -59,8 +59,10 @@ function update(elapsedTime) {
       player.onLog = true;
   }
 
-  if (player.x >= 480 && player.x < 688 && !player.onLog)
-    player.state = "dead";
+  if (player.x >= 480 && player.x < 688) {
+    if (!player.onLog)
+      player.state = "dead";
+  }
   else
     player.onLog = false;
 
