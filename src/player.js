@@ -1,7 +1,7 @@
 "use strict";
 
 const MS_PER_FRAME = 1000 / 8;
-const MOVE_SPEED = 128;
+const MOVE_SPEED = 64;
 
 /**
  * @module exports the Player class
@@ -50,9 +50,9 @@ Player.prototype.update = function (time) {
       if (this.timer > MS_PER_FRAME) { // TODO > update pos separate from animation? 2 frames per pos update?
         this.frame += 1;
         if (this.frame < 3) {
-          this.x += this.targetx * MOVE_SPEED / 8;
-          this.y += this.targety * MOVE_SPEED / 8;
-        } else if (this.frame >= 8) {
+          this.x += this.targetx * MOVE_SPEED / 4;
+          this.y += this.targety * MOVE_SPEED / 4;
+        } else if (this.frame >= 4) {
           this.state = "idle";
           this.frame = 10;
         }
