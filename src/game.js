@@ -44,14 +44,28 @@ Game.prototype.pause = function (flag) {
  * @param{time} the current time as a DOMHighResTimeStamp
  */
 Game.prototype.loop = function (newTime) {
-  var game = this;
-  var elapsedTime = newTime - this.oldTime;
-  this.oldTime = newTime;
+  try {
+    var game = this;
+    var elapsedTime = newTime - this.oldTime;
+    this.oldTime = newTime;
 
-  if (!this.paused) this.update(elapsedTime);
-  this.render(elapsedTime, this.frontCtx);
+    if (!this.paused) this.update(elapsedTime);
+    this.render(elapsedTime, this.frontCtx);
 
-  // Flip the back buffer
-  this.frontCtx.drawImage(this.backBuffer, 0, 0);
+    // Flip the back buffer
+    this.frontCtx.drawImage(this.backBuffer, 0, 0);
+  }
+  catch (e) {
+
+  }
+}
+
+Game.prototype.lose = function () {
+  this.frontCtx.fillStyle = "purple"; // Something clear and obvious besides red since apples are red...
+  this.frontCtx.font = "bold 80px Verdana";
+  this.frontCtx.textAlign = "center";
+  this.frontCtx.textBaseline = "middle";
+  this.frontCtx.fillText("GAME OVER", this.backBuffer.width / 2, this.backBuffer.height / 2);
+  throw new Error("Lazy terminate...");
 }
 

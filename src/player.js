@@ -24,6 +24,7 @@ function Player(position) {
   this.spritesheet = new Image();
   this.spritesheet.src = encodeURI('assets/PlayerSprite2.png');
   this.timer = 0;
+  this.onLog = false;
   this.frame = 10;
   this.lives = 3;
 }
@@ -42,10 +43,8 @@ Player.prototype.update = function (time) {
         if (this.frame > 13) this.frame = 10;
       }
       break;
-    // TODO: Implement your player's update by state
 
     case "moving":
-      // TODO > properly sync animation
       this.timer += time;
       if (this.timer > MS_PER_FRAME) { // TODO > update pos separate from animation? 2 frames per pos update?
         this.frame += 1;
@@ -56,6 +55,19 @@ Player.prototype.update = function (time) {
           this.state = "idle";
           this.frame = 10;
         }
+      }
+      break;
+
+    case "dead":
+      this.timer += time;
+      if (this.timer > MS_PER_FRAME * 4) {
+        this.lives--;
+        this.timer = 0;
+        this.x = 0;
+        this.y = 240;
+        this.state = "idle";
+        this.frame = 10;
+        this.onLog = false;
       }
       break;
   }
@@ -82,7 +94,6 @@ Player.prototype.render = function (time, ctx) {
     // TODO: Implement your player's redering according to state
 
     case "dead":
-
       break;
   }
 }
@@ -95,3 +106,4 @@ Player.prototype.move = function (x, y) {
     this.frame = -1; // -1 so animation starts on next update() correctly. -1++ = 0
   }
 }
+

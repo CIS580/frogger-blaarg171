@@ -4,6 +4,7 @@
 const Game = require('./game.js');
 const Player = require('./player.js');
 const Mini = require('./mini.js');
+const Log = require('./log.js');
 
 /* Global variables */
 var canvas = document.getElementById('screen');
@@ -11,7 +12,10 @@ var game = new Game(canvas, update, render);
 var player = new Player({ x: 0, y: 240 });
 var lanes = [[144, 192, 336, 384], [480, 528, 576, 624]];
 var level = 1;
-var obstacles = [new Mini(144, -128, 1), new Mini(192, 380, 1), new Mini(336, 240, -1), new Mini(384, 600, -1)];
+var obstacles = {
+  minis: [new Mini(144, -128, 1), new Mini(144, 300, 1), new Mini(192, 380, 1), new Mini(192, -200, 1), new Mini(336, 240, -1), new Mini(336, 600, -1), new Mini(384, 600, -1), new Mini(384, 20, -1)],
+  logs: [new Log(480, 0, 1), new Log(480, 240, 1), new Log(528, -200, -1), new Log(528, 200, -1), new Log(576, 240, 1), new Log(576, 600, 1), new Log(624, 240, -1), new Log(624, 30, -1)]
+};
 
 var background = new Image();
 background.src = encodeURI('assets/background.png');
@@ -38,12 +42,32 @@ masterLoop(performance.now());
  */
 function update(elapsedTime) {
   player.update(elapsedTime);
-  for (var i = 0; i < obstacles.length; i++) {
-    var obs = obstacles[i];
-    updateObstacle(obs);
-    if (obs.x == player.x && !(obs.y + obs.height < player.y || obs.y > player.y + player.height)) die();
+
+  for (var i = 0; i < obstacles.minis.length; i++) {
+    var mini = obstacles.minis[i];
+    mini.speed *= level;
+    updateObstacle(mini);
+    if (player.x >= 144 && player.x < 448) {
+      if (mini.x == player.x && !(mini.y + mini.height < player.y || mini.y > player.y + player.height)) player.state = "dead";
+    }
   }
+
+  for (var i = 0; i < obstacles.logs.length; i++) {
+    var log = obstacles.logs[i];
+    updateObstacle(log);
+    if (log.x == player.x && !(log.y + log.height < player.y || log.y > player.y + player.height))
+      player.onLog = true;
+  }
+
+  if (player.x >= 480 && player.x < 688 && player.onLog)
+    player.state = "dead";
+  else if (player.x >= 720) {
+    player.x = 0;
+    player.y = 240;
+  }
+
   document.getElementById("lives").innerHTML = player.lives;
+  if (player.lives <= 0) game.lose();
 }
 
 /**
@@ -55,20 +79,19 @@ function update(elapsedTime) {
   */
 function render(elapsedTime, ctx) {
   ctx.drawImage(background, 0, 0, background.width, background.height);
-  player.render(elapsedTime, ctx);
-  for (var i = 0; i < obstacles.length; i++) {
-    obstacles[i].render(ctx);
+  for (var i = 0; i < obstacles.minis.length; i++) {
+    obstacles.minis[i].render(ctx);
   }
+  for (var i = 0; i < obstacles.logs.length; i++) {
+    obstacles.logs[i].render(ctx);
+  }
+  player.render(elapsedTime, ctx);
 }
 
 function updateObstacle(obs) {
   obs.update();
-  if (obs.y < 0 - obs.height && obs.direction < 0) obs.y = rollRandom(canvas.height + obs.height, canvas.height + obs.height * 5);
-  else if (obs.y > canvas.height + obs.height && obs.direction > 0) obs.y = rollRandom(-(obs.height * 5), 0 - obs.height);
-}
-
-function die() {
-
+  if (obs.y < 0 - obs.height && obs.direction < 0) obs.y = rollRandom(canvas.height, canvas.height + 64 * 10);
+  else if (obs.y > canvas.height + obs.height && obs.direction > 0) obs.y = rollRandom(-(64 * 10), 0 - 64);
 }
 
 window.onkeydown = function (event) {
