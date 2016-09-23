@@ -45,7 +45,7 @@ function update(elapsedTime) {
 
   for (var i = 0; i < obstacles.minis.length; i++) {
     var mini = obstacles.minis[i];
-    mini.speed *= level;
+    mini.speed = level * mini.speedBase;
     updateObstacle(mini);
     if (player.x >= 144 && player.x < 448) {
       if (mini.x == player.x && !(mini.y + mini.height < player.y || mini.y > player.y + player.height)) player.state = "dead";
@@ -59,14 +59,19 @@ function update(elapsedTime) {
       player.onLog = true;
   }
 
-  if (player.x >= 480 && player.x < 688 && player.onLog)
+  if (player.x >= 480 && player.x < 688 && !player.onLog)
     player.state = "dead";
-  else if (player.x >= 720) {
+  else
+    player.onLog = false;
+
+  if (player.x >= 720) {
     player.x = 0;
     player.y = 240;
+    level++;
   }
 
   document.getElementById("lives").innerHTML = player.lives;
+  document.getElementById("level").innerHTML = level;
   if (player.lives <= 0) game.lose();
 }
 

@@ -12,6 +12,7 @@ function Mini(x, y, direction) {
   this.width = 64;
   this.height = 64;
   this.speed = 8;
+  this.speedBase = 8;
   this.spritesheet = new Image();
   this.spritesheet.src = 'assets/cars_mini.svg';
 }
