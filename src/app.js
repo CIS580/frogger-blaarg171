@@ -53,10 +53,13 @@ function update(elapsedTime) {
   }
 
   for (var i = 0; i < obstacles.logs.length; i++) {
+    updateObstacle(obstacles.logs[i]);
+  }
+  for (var i = 0; i < obstacles.logs.length; i++) {
     var log = obstacles.logs[i];
-    updateObstacle(log);
     if (log.x == player.x && !(log.y + log.height < player.y || log.y > player.y + player.height))
       player.onLog = true;
+    break;
   }
 
   if (player.x >= 480 && player.x < 688) {
